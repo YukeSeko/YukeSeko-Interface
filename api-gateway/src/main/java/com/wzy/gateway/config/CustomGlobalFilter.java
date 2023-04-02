@@ -51,11 +51,6 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
     @DubboReference
     private InnerService innerService;
 
-    @Autowired
-    private WebClient.Builder webBuilder;
-
-    private static final List<String> IP_WHITE_LIST = Arrays.asList("127.0.0.1", "localhost", "0:0:0:0:0:0:0:1");
-
     private static final List<String>  PATH_WHITE_LIST = Arrays.asList("/api/apiclient","/api/user/**");
 
     //需要登录才能进行访问
@@ -76,12 +71,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         if(collect.contains(true)){
             return chain.filter(exchange);
         }
-        // 2. 访问控制 - 黑白名单 - 拒绝访问
-        if (!IP_WHITE_LIST.contains(request.getLocalAddress().getHostString())) {
-            response.setStatusCode(HttpStatus.FORBIDDEN);
-            return response.setComplete();
-        }
-        // 3、网关统一鉴权：其他接口需要判断用户是否登录
+        // 2、网关统一鉴权：其他接口需要判断用户是否登录
         List<Boolean> collectLogin = PATH_LOGIN_LIST.stream().map(item -> {
             AntPathMatcher antPathMatcher = new AntPathMatcher();
             return antPathMatcher.match(item, path);
@@ -103,7 +93,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
                 return chain.filter(exchange);
             }
         }
-        // 4. 用户鉴权在服务端鉴别，这里只做判空
+        // 3. 用户鉴权在服务端鉴别，这里只做判空
         String accessKey = headers.getFirst("accessKey");
         String appId = headers.getFirst("appId");
         String secretKey = headers.getFirst("secretKey");
@@ -113,7 +103,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
             response.setStatusCode(HttpStatus.FORBIDDEN);
             return response.setComplete();
         }
-        // 5。判断用户剩余调用次数是否足够
+        // 4。判断用户剩余调用次数是否足够
         boolean hasCount = innerService.hasCount(Long.parseLong(interfaceId), Long.parseLong(userId));
         if(!hasCount){
             //调用次数不足，自定义返回结果
