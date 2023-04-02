@@ -67,15 +67,15 @@ public class Oauth2Controller {
         }catch (Exception e){
             PrintWriter writer = res.getWriter();
             writer.println("<script>alert('请求超时，请重试')</script>");
-            return  "redirect:http://localhost:8000/user/login";
+            return  "redirect:http://122.9.148.119/user/login";
         }
         if (response.getStatus() == 200){
             Oauth2ResTo oauth2ResTo = JSONUtil.toBean(response.body(), Oauth2ResTo.class);
             BaseResponse baseResponse = userFeignServices.oauth2Login(oauth2ResTo,"gitee");
             //拿到token，远程调用查询用户是否注册、未注册的自动进行注册，已经完成注册的，则进行登录
-            if (cookieResUtils(res, baseResponse)) return "redirect:http://localhost:8000/user/login";
+            if (cookieResUtils(res, baseResponse)) return "redirect:http://122.9.148.119/user/login";
         }
-        return "redirect:http://localhost:8000/";
+        return "redirect:http://122.9.148.119";
     }
 
 
@@ -92,7 +92,7 @@ public class Oauth2Controller {
         }catch (Exception e){
             PrintWriter writer = res.getWriter();
             writer.println("<script>alert('请求超时，请重试')</script>");
-            return  "redirect:http://localhost:8000/user/login";
+            return  "redirect:http://122.9.148.119/user/login";
         }
         if (response.getStatus() == 200){
             String s = response.body().toString();
@@ -104,9 +104,9 @@ public class Oauth2Controller {
             oauth2ResTo.setAccess_token(token);
             BaseResponse baseResponse = userFeignServices.oauth2Login(oauth2ResTo,"github");
             //拿到token，远程调用查询用户是否注册、未注册的自动进行注册，已经完成注册的，则进行登录
-            if (cookieResUtils(res, baseResponse)) return "redirect:http://localhost:8000/user/login";
+            if (cookieResUtils(res, baseResponse)) return "redirect:http://122.9.148.119/user/login";
         }
-        return "redirect:http://localhost:8000/";
+        return "redirect:http://122.9.148.119";
     }
 
     private boolean cookieResUtils(HttpServletResponse res, @NotNull BaseResponse baseResponse) throws IOException {
