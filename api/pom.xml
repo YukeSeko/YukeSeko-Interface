@@ -8,7 +8,7 @@
         <artifactId>YukeSeko-Api</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
+    <packaging>jar</packaging>
     <groupId>com.wzy</groupId>
     <artifactId>api</artifactId>
 
