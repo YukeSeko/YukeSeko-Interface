@@ -1,0 +1,11 @@
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+target
+test
+*.iml
+api-backend.iml
+out
+gen

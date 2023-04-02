@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzy.api.mapper.InterfaceInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.wzy.api.model.entity.InterfaceInfo">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="url" column="url" jdbcType="VARCHAR"/>
+            <result property="requestParams" column="requestParams" jdbcType="VARCHAR"/>
+            <result property="requestHeader" column="requestHeader" jdbcType="VARCHAR"/>
+            <result property="responseHeader" column="responseHeader" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="method" column="method" jdbcType="VARCHAR"/>
+            <result property="userId" column="userId" jdbcType="BIGINT"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,description,
+        url,requestParams,requestHeader,
+        responseHeader,status,method,
+        userId,createTime,updateTime,
+        isDelete
+    </sql>
+
+    <!--  联表分页查询  -->
+    <select id="selectAllPage" resultType="com.wzy.api.model.vo.AllInterfaceInfoVo">
+        SELECT i.id,i.name, ch.charging, ch.availablePieces,i.description,i.url,i.requestParams,i.requestHeader,i.responseHeader,i.status,i.method,i.userId,i.createTime,i.updateTime,i.isDelete FROM interface_info i LEFT JOIN interface_charging ch ON i.id=ch.interfaceid
+        <where>
+                and i.isDelete=0
+            <if test="dto.id!='' and dto.id != null">
+                and i.id = #{dto.id}
+            </if>
+            <if test="dto.name!='' and dto.name != null">
+                and i.name = #{dto.name}
+            </if>
+            <if test="dto.description!='' and dto.description != null">
+                and i.description like concat('%',#{dto.description},'%')
+            </if>
+            <if test="dto.url!='' and dto.url != null">
+                and i.url = #{dto.url}
+            </if>
+            <if test="dto.requestParams!='' and dto.requestParams != null">
+                and i.requestParams = #{dto.requestParams}
+            </if>
+            <if test="dto.requestHeader!='' and dto.requestHeader != null">
+                and i.requestHeader = #{dto.requestHeader}
+            </if>
+            <if test="dto.responseHeader!='' and dto.responseHeader != null">
+                and i.responseHeader = #{dto.responseHeader}
+            </if>
+            <if test="dto.status!='' and dto.status != null">
+                and i.status = #{dto.status}
+            </if>
+            <if test="dto.method!='' and dto.method != null">
+                and i.method = #{dto.method}
+            </if>
+            <if test="dto.userId!='' and dto.userId != null">
+                and i.userId = #{dto.userId}
+            </if>
+            <if test="dto.createTime!='' and dto.createTime != null">
+                and i.createTime = #{dto.createTime}
+            </if>
+            <if test="dto.updateTime!='' and dto.updateTime != null">
+                and i.updateTime = #{dto.updateTime}
+            </if>
+            <if test="dto.charging!='' and dto.charging != null">
+                and ch.charging = #{dto.charging}
+            </if>
+            <if test="dto.availablePieces!='' and dto.availablePieces != null">
+                and ch.availablePieces = #{dto.availablePieces}
+            </if>
+        </where>
+        <if test="dto.sortField!='' and dto.sortField != null and dto.sortField !='charging' and dto.sortField !='availablePieces'">
+            ORDER BY i.#{dto.sortField}  DESC
+        </if>
+        <if test="dto.sortField!='' and dto.sortField != null and dto.sortField =='charging' and dto.sortField =='availablePieces'">
+            ORDER BY ch.#{dto.sortField}  DESC
+        </if>
+    </select>
+
+    <select id="selectOnlinePage" resultType="com.wzy.api.model.vo.AllInterfaceInfoVo">
+        SELECT i.id,i.name, ch.charging, ch.availablePieces,i.description,i.url,i.requestParams,i.requestHeader,i.responseHeader,i.status,i.method,i.userId,i.createTime,i.updateTime,i.isDelete FROM interface_info i LEFT JOIN interface_charging ch ON i.id=ch.interfaceid
+        where i.isDelete=0 and i.status=1
+    </select>
+    <select id="getInterfaceList" resultType="common.vo.EchartsVo">
+        SELECT
+            COUNT(*) as count ,
+            DATE_FORMAT(updateTime,'%Y-%m-%d') as date
+        FROM `interface_info`
+        WHERE isDelete=0 AND DATE_FORMAT(updateTime, '%Y-%m-%d')
+        IN
+        <foreach collection="dateList" item="dateList" separator="," open="(" close=")">
+            #{dateList}
+        </foreach>
+        GROUP BY
+            DATE_FORMAT(updateTime, '%Y-%m-%d')
+        ORDER BY
+            DATE_FORMAT(updateTime, '%Y-%m-%d') DESC;
+    </select>
+</mapper>

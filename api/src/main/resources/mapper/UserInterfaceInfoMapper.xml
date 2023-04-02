@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzy.api.mapper.UserInterfaceInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.wzy.api.model.entity.UserInterfaceInfo">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userId" column="userId" jdbcType="BIGINT"/>
+            <result property="interfaceInfoId" column="interfaceInfoId" jdbcType="BIGINT"/>
+            <result property="totalNum" column="totalNum" jdbcType="INTEGER"/>
+            <result property="leftNum" column="leftNum" jdbcType="INTEGER"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,userId,interfaceInfoId,
+        totalNum,leftNum,status,
+        createTime,updateTime,isDelete
+    </sql>
+    <select id="getUserInterfaceLeftNum" resultType="com.wzy.api.model.vo.UserInterfaceLeftNumVo">
+        SELECT i.id,i.name,i.description,i.url,i.method,u.leftNum ,c.charging,c.availablePieces FROM interface_info i
+        LEFT JOIN user_interface_info u ON i.id = u.interfaceInfoId
+        LEFT JOIN interface_charging c ON i.id = c.interfaceid
+        WHERE i.isDelete=0 AND i.status = 1 AND u.userId =#{id}
+    </select>
+</mapper>

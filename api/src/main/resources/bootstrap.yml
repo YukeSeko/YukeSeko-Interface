@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: api
+  profiles:
+    active: prod
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      config:
+        file-extension: yaml
+        namespace: 92fae847-efb0-48bb-89a9-826c3b37ac22
+        group: Api_Project
+      discovery:
+        namespace: 92fae847-efb0-48bb-89a9-826c3b37ac22
+      password: 1973819wangzhuo

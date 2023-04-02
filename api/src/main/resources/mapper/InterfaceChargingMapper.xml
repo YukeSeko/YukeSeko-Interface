@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzy.api.mapper.InterfaceChargingMapper">
+
+    <resultMap id="BaseResultMap" type="com.wzy.api.model.entity.InterfaceCharging">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="interfaceid" column="interfaceid" jdbcType="BIGINT"/>
+            <result property="charging" column="charging" jdbcType="FLOAT"/>
+            <result property="availablePieces" column="availablePieces" jdbcType="VARCHAR"/>
+            <result property="userId" column="userId" jdbcType="BIGINT"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,interfaceid,charging,
+        availablePieces,userId,createTime,
+        updateTime,isDelete
+    </sql>
+    <select id="getPresentAvailablePieces" resultType="java.lang.String">
+        select availablePieces from interface_charging where interfaceid=#{interfaceId}
+    </select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzy.api.mapper.AuthMapper">
+
+    <resultMap id="BaseResultMap" type="common.model.entity.Auth">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userid" column="userId" jdbcType="BIGINT"/>
+            <result property="useraccount" column="userAccount" jdbcType="VARCHAR"/>
+            <result property="appid" column="appId" jdbcType="INTEGER"/>
+            <result property="accesskey" column="accessKey" jdbcType="VARCHAR"/>
+            <result property="secretkey" column="secretKey" jdbcType="VARCHAR"/>
+            <result property="token" column="token" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,userId,userAccount,
+        appId,accessKey,secretKey,
+        token
+    </sql>
+</mapper>

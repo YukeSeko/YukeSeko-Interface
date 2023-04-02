@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzy.order.mapper.ApiOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.wzy.order.model.entity.ApiOrder">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="interfaceId" column="interfaceId" jdbcType="BIGINT"/>
+        <result property="userId" column="userId" jdbcType="BIGINT"/>
+        <result property="orderSn" column="orderSn" jdbcType="VARCHAR"/>
+        <result property="orderNum" column="orderNum" jdbcType="BIGINT"/>
+        <result property="charging" column="charging" jdbcType="FLOAT"/>
+        <result property="totalAmount" column="totalAmount" jdbcType="FLOAT"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,interfaceId,userId,
+        orderSn,orderNum,charging,
+        totalAmount,status,createTime,
+        updateTime,isDelete
+    </sql>
+    <select id="getCurrentOrderInfo" resultType="com.wzy.order.model.vo.ApiOrderStatusVo">
+        SELECT o.interfaceId,o.orderSn,o.orderNum,o.totalAmount,o.charging,o.createTime, i.name, i.description, o.`status`, a.gmtPayment ,a.tradeNo
+        FROM `api_order` o
+                 LEFT JOIN alipay_info a ON o.orderSn=a.orderSn
+                 LEFT JOIN interface_info i ON o.interfaceId=i.id
+        <where>
+            and o.userId =#{userId}
+            <if test="status!='' and status != null">
+                and o.`status` = #{status}
+            </if>
+        </where>
+    </select>
+    <select id="getOrderEchartsData" resultType="common.vo.EchartsVo">
+        SELECT
+        COUNT(*) as count ,
+        DATE_FORMAT(createTime,'%Y-%m-%d') as date
+        FROM `api_order`
+        WHERE isDelete=0 AND status=1
+        AND DATE_FORMAT(createTime, '%Y-%m-%d') IN
+        <foreach collection="dateList" item="dateList" separator="," open="(" close=")">
+            #{dateList}
+        </foreach>
+        GROUP BY
+        DATE_FORMAT(createTime, '%Y-%m-%d')
+        ORDER BY
+        DATE_FORMAT(createTime, '%Y-%m-%d') DESC;
+    </select>
+
+
+</mapper>

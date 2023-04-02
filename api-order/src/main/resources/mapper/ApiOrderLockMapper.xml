@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzy.order.mapper.ApiOrderLockMapper">
+
+    <resultMap id="BaseResultMap" type="com.wzy.order.model.entity.ApiOrderLock">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="orderSn" column="orderSn" jdbcType="VARCHAR"/>
+            <result property="chargingId" column="chargingId" jdbcType="BIGINT"/>
+            <result property="userId" column="userId" jdbcType="BIGINT"/>
+            <result property="lockNum" column="lockNum" jdbcType="BIGINT"/>
+            <result property="lockStatus" column="lockStatus" jdbcType="INTEGER"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,orderSn,chargingId,
+        userId,lockNum,lockStatus,
+        createTime,updateTime
+    </sql>
+</mapper>
