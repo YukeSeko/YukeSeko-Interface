@@ -48,7 +48,7 @@ const Index: React.FC = () => {
           },
         }}
         renderItem={(item) => {
-          const router = `/OnlineCall/interfaceInfo/${item.id}`;
+          const router = `/OnlineCall/InterfaceInfo/${item.id}`;
           return (
             <List.Item
               actions={[

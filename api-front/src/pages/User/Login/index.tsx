@@ -118,12 +118,12 @@ const Login: React.FC = () => {
     return (
       <>
         <Tooltip title="Github">
-          <a href="https://github.com/login/oauth/authorize?client_id=4f2711fe7c282b1e2eef&redirect_uri=http://localhost:88/api/oauth/github&state=ture">
+          <a href="https://github.com/login/oauth/authorize?client_id=4f2711fe7c282b1e2eef&redirect_uri=http://122.9.148.119:88/api/oauth/github&state=ture">
             <GithubFilled key="GithubOutlined" className={langClassName} />
           </a>
         </Tooltip>
         <Tooltip title="Gitee">
-          <a href="https://gitee.com/oauth/authorize?client_id=7d9f0b44f3f5fe27722c5f54cbb5c8b66ee908de39d34f08204dea5b28a706e1&redirect_uri=http://localhost:88/api/oauth/gitee&response_type=code">
+          <a href="https://gitee.com/oauth/authorize?client_id=7d9f0b44f3f5fe27722c5f54cbb5c8b66ee908de39d34f08204dea5b28a706e1&redirect_uri=http://122.9.148.119:88/api/oauth/gitee&response_type=code">
             <img  className={langClassName} style={{width:70,marginLeft:10}} src="https://gitee.com/static/images/logo-black.svg?t=158106664"/>
           </a>
         </Tooltip>
@@ -434,13 +434,16 @@ const Login: React.FC = () => {
                 ]}
                 onGetCaptcha={async (mobile) => {
                   //获取验证成功后才会进行倒计时
-                  const result = await captchaUsingGET({
-                    mobile,
-                  });
-                  if (!result) {
-                    return;
+                  try {
+                    const result = await captchaUsingGET({
+                      mobile,
+                    });
+                    if (!result) {
+                      return;
+                    }
+                    message.success(result.data);
+                  }catch (e) {
                   }
-                  message.success('获取验证码成功！');
                 }}
               />
             </>
@@ -561,13 +564,16 @@ const Login: React.FC = () => {
                 ]}
                 onGetCaptcha={async (mobile) => {
                   //获取验证成功后才会进行倒计时
-                  const result = await captchaUsingGET({
-                    mobile,
-                  });
-                  if (!result) {
-                    return;
+                  try {
+                    const result = await captchaUsingGET({
+                      mobile,
+                    });
+                    if (!result) {
+                      return;
+                    }
+                    message.success(result.data);
+                  }catch (e) {
                   }
-                  message.success('获取验证码成功！');
                 }}
               />
               <div style={{display:"flex"}}>

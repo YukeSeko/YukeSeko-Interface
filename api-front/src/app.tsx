@@ -21,30 +21,15 @@ export async function getInitialState(): Promise<InitialState> {
     loginUser: undefined
   }
   try {
-
-    // const user = localStorage.getItem("api-open-platform-user")
-    // if (user){
-    //   state.loginUser = JSON.parse(user)
-    //   if (history.location.pathname === '/user/login'){
-    //     //防止用户登录后再次跳转到登录页面
-    //     message.success("登录成功")
-    //     history.push('/');
-    //   }
-    // }else {
     const res = await checkUserLoginUsingPOST()
     if (res.data) {
       state.loginUser = res.data
-      if (history.location.pathname === '/user/login'){
+      if (history.location.pathname === '/user/login/'){
         //防止用户登录后再次跳转到登录页面
-        message.error("您已登录，无法访问该页面")
+        message.success("登录成功")
         history.push('/');
       }
     }
-    //   if (history.location.pathname !== '/user/login'){
-    //     //只有当页面路径不为'/user/login'时，才进行请求
-    //
-    //   //}
-    //   }
   } catch (error) {
     history.push(loginPath);
   }

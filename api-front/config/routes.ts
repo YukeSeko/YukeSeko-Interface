@@ -10,10 +10,10 @@ export default [
     routes: [
       {path: '/OnlineCall', name: '在线调用', icon: 'table', access: 'canUser', component: './OnlineCall/index',hideInMenu: true},
       {
-        path: '/OnlineCall/interfaceInfo/:id',
+        path: '/OnlineCall/InterfaceInfo/:id',
         name: '接口详情',
         access: 'canUser',
-        component: './InterfaceInfo',
+        component: './OnlineCall/InterfaceInfo',
         hideInMenu: true,
       },
     ]

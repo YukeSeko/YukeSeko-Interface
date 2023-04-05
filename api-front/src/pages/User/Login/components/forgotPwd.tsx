@@ -147,11 +147,14 @@ const FogotPwd: React.FC<Props> = (props) => {
               ]}
               onGetCaptcha={async () => {
                 //获取验证成功后才会进行倒计时
-                const result = await sendPassUserCodeUsingPOST();
-                if (!result) {
-                  return;
+                try {
+                  const result = await sendPassUserCodeUsingPOST();
+                  if (!result) {
+                    return;
+                  }
+                  message.success(result.data);
+                }catch (e) {
                 }
-                message.success('获取验证码成功！');
               }}
             />
           </div>
