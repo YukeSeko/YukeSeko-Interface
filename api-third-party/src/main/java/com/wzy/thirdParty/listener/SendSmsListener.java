@@ -46,6 +46,7 @@ public class SendSmsListener  {
             //投递次数大于三次，放入死信队列
             log.error("重试次数大于三次");
             channel.basicReject(message.getMessageProperties().getDeliveryTag(),false);
+            redisTemplate.delete(RabbitMqConstant.SMS_HASH_PREFIX + messageId);
             return;
         }
         try{
@@ -54,7 +55,7 @@ public class SendSmsListener  {
             if (null == mobile || null == code){
                 throw new RuntimeException("请求参数错误");
             }
-            //此处不实际发送验证码，等上线后再发送即可
+            //发送验证码
             SendSmsResponse response = null;
             response = sendSmsUtils.sendSmsResponse(mobile.toString(), code);
             SendStatus[] sendStatusSet = response.getSendStatusSet();
