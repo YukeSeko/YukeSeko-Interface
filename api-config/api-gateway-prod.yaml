@@ -1,0 +1,75 @@
+server:
+  port: 88
+spring:
+  application:
+    name: api-gateway
+  main:
+    allow-circular-references: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: #nacos名称空间
+        password: #nacos密码，默认nacos
+    #sentinel:配置(第一次启动时，可能会查询不到当前服务，请求一次后即可看到该服务)
+    sentinel:
+      transport:
+        port: 8719 # 默认8719端口，键入被占用会自动从8719+1，直到找到未被占用的端口
+        dashboard: localhost:8080 #表示Sentinel控制台的地址
+      eager: true #服务启动直接建立心跳连接
+      scg:
+        # 限流后的相应配置
+        fallback:
+          content-type: application/json
+          # 模式： response / redirect
+          mode: response
+          #响应状态码
+          response-status: 200
+          #响应消息体
+          response-body: '{"code":0,"message":"请求过于频繁，请稍后再试...","data":null}'
+      # 持久化流控规则
+      datasource:
+        dsl:
+          nacos:
+            namespace: 92fae847-efb0-48bb-89a9-826c3b37ac22
+            server-addr: localhost:8848
+            data-type: json
+            rule-type: flow
+            group-id: Api_Project
+            data-id: api-sentinel-config-prod
+            password: #nacos密码，默认nacos
+
+
+    gateway:
+      enabled: true
+      discovery:
+          locator:
+            lower-case-service-id: true
+      routes:
+        - id: apiInterface
+          uri: lb://api-interface
+          predicates:
+            - Path=/api/main
+        - id: thirdParty
+          uri: lb://api-third-party
+          predicates:
+            - Path=/api/oauth/**,/api/alipay/**
+        - id: apiOrder
+          uri: lb://api-order
+          predicates:
+            - Path=/api/order/**
+        - id: api
+          uri: lb://api
+          predicates:
+            - Path=/api/**
+
+
+#dubbo 配置
+dubbo:
+  application:
+    name: customer
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://localhost:8848?namespace=nacos名称空间

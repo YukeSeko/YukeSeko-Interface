@@ -1,0 +1,78 @@
+spring:
+  application:
+    name: api
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: #nacos名称空间
+        password: #nacos密码
+  # DataSource Config
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/api
+    username: root
+    password: #数据库密码
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  # session 失效时间（分钟）
+  session:
+    timeout: 2592000 #30天过期
+    store-type: redis
+  # redis 配置
+  redis:
+    port: 6379
+    host: localhost 
+    database: 0
+    password: #redis密码
+    lettuce:
+      pool:
+        max-active: 8 #最大连接数
+        max-idle: 8  #最大空闲数
+        min-idle: 0 #最小空闲连接
+        max-wait: 100ms #连接等待时间
+  rabbitmq:
+    host: 122.9.148.119 
+    virtual-host: / # 虚拟主机
+    port: 5672
+    username: guest
+    password: #rabbit mq 密码
+    publisher-confirm-type: correlated #开启发送端确认
+    publisher-returns: true #开启发送端消息抵达队列的确认
+    template:
+      mandatory: true #只要抵达队列，以异步发送优先回调我们这个returnsConfirm
+server:
+  port: 7529
+  servlet:
+    context-path: /api
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+logging:
+  level:
+    org:
+      springframework:
+        security: debug
+api:
+  client:
+    app-id: 740326161
+    secret-key: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1dWlkIjoiYzMxOTBjYzAzNTZlMzIxYWE4Mjk0NDQ3NjY3NjY5YjIifQ.YHaUrdC0vN10Ca4eI8dc7bFKeAFz57HB0ZXgcJbmxLvGgSftNzTToXuD5PXMPsOB4OkDB6k7OaDSK5TQvMmppQ'
+    access-key: '2d0115905df5aa3e158676f8c1a41c77a8ce4f84698bb4e2badbd708f430b9118b7e4948d38dbf73ef83241c087d53be0589682c62f45540ac9524f0a3b322b0'
+
+
+# dubbo 配置
+dubbo:
+  application:
+    name: provider
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://localhost:8848?namespace=#nacos名称空间

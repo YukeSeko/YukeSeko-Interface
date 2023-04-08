@@ -1,0 +1,21 @@
+#Sentinel 配置
+[
+    {
+        "resource": "apiOrder",
+        "limitApp": "default",
+        "grade": 1,
+        "count": 400,
+        "strategy": 0,
+        "controlBehavior": 0,
+        "clusterMode": false
+    },
+    {
+        "resource": "api",
+        "limitApp": "default",
+        "grade": 1,
+        "count": 400,
+        "strategy": 0,
+        "controlBehavior": 0,
+        "clusterMode": false
+    }
+]

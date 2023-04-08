@@ -1,0 +1,32 @@
+server:
+  port: 8100
+  servlet:
+    context-path: /api
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/api
+    username: root
+    password: #数据库密码
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  application:
+    name: api-interface
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: nacos名称空间
+        password: #nacos密码，默认nacos
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+
+tencent:
+  secretId: #短信控制台查看
+  secretKey: #短信控制台查看
+  sdkAppId: #短信控制台查看
+  signName: #短信控制台查看
+  templateId: #短信控制台查看
