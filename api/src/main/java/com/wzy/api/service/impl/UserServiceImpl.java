@@ -365,6 +365,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         List<UserVO> userVOList = userPage.getRecords().stream().map(user -> {
             UserVO userVO = new UserVO();
             BeanUtils.copyProperties(user, userVO);
+            userVO.setUserName(user.getNickName());
             return userVO;
         }).collect(Collectors.toList());
         userVOPage.setRecords(userVOList);
