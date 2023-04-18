@@ -81,6 +81,8 @@ public class User implements Serializable , UserDetails {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
+    public String getNickName(){return userName;}
+    
     /**
      * 配置用户权限
      * @return
