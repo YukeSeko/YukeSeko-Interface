@@ -466,7 +466,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         Cookie cookie = new Cookie("api-mobile-signature", signature);
         cookie.setMaxAge(600);
-        cookie.setPath("/user/login");//登陆页面下才可以访问
+        cookie.setPath("/");//登陆页面下才可以访问
         response.addCookie(cookie);
         String newMobile = mobile.substring(0, 3) + "****" + mobile.substring(7);
         return ResultUtils.success(newMobile);
