@@ -72,7 +72,7 @@ const Index: React.FC = () => {
   }
 
   const checkLoginUserPhone = () =>{
-    if (initialState?.loginUser?.mobile ===null){
+    if (initialState?.loginUser?.mobile ===null || initialState?.loginUser?.mobile === ""){
       setShowModal(true)
       getCaptcha()
     }
