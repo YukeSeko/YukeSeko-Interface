@@ -520,14 +520,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         Cookie[] cookies = request.getCookies();
-        Cookie cookie = null;
         String value = null;
-        try {
-            cookie = cookies[1];
-            value= cookie.getValue();
-        }catch (Exception e){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        for (Cookie cookie : cookies) {
+            String name = cookie.getName();
+            if ("api-mobile-signature".equals(name)){
+                value = cookie.getValue();
+            }
         }
+        // value为空会停止执行下面的语句
+        assert value != null;
         //从redis中拿到加密后的手机号
         String s = (String) redisTemplate.opsForValue().get(value);
         String[] strings = mobileSignature.decodeHex(s);
@@ -551,14 +552,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         Cookie[] cookies = request.getCookies();
-        Cookie cookie = null;
         String value = null;
-        try {
-            cookie = cookies[1];
-            value= cookie.getValue();
-        }catch (Exception e){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        for (Cookie cookie : cookies) {
+            String name = cookie.getName();
+            if ("api-mobile-signature".equals(name)){
+                value = cookie.getValue();
+            }
         }
+        // value为空会停止执行下面的语句
+        assert value != null;
         //从redis中拿到加密后的信息
         String s = (String) redisTemplate.opsForValue().get(value);
         String[] strings = mobileSignature.decodeHex(s);
